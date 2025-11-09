@@ -639,7 +639,7 @@
     <div class="animated-cursor" id="animatedCursor"></div>
 
     <audio id="music" loop preload="auto">
-        <source src="interstellar_02. Cornfield Chase.mp3" type="audio/mpeg">
+        <source src="interstellar_04. Day One.mp3" type="audio/mpeg">
     </audio>
 
     <!-- ИНТРО -->
@@ -907,10 +907,8 @@
         
         let isPlaying = false;
 
-        // Предзагрузка музыки
         music.load();
 
-        // Анимация курсора
         setTimeout(() => {
             const btnRect = playBtn.getBoundingClientRect();
             const targetX = btnRect.left + btnRect.width / 2;
@@ -950,17 +948,14 @@
             }, 100);
         }, 8000);
 
-        // Клик по кнопке
         playBtn.addEventListener('click', function() {
             if (!isPlaying) {
                 music.volume = 0.65;
                 
-                // Пробуем включить музыку
                 const playPromise = music.play();
                 
                 if (playPromise !== undefined) {
                     playPromise.then(() => {
-                        // Музыка включилась успешно
                         isPlaying = true;
                         playBtn.classList.add('playing');
                         musicStatus.textContent = '🎵 Музыка играет!';
@@ -978,7 +973,6 @@
                         
                         startMusicEffects();
                     }).catch(error => {
-                        // Если не получилось - показываем сообщение
                         console.log('Не удалось включить музыку:', error);
                         musicStatus.textContent = 'Кликни ещё раз для музыки';
                         musicStatus.style.color = '#ff9800';
@@ -986,7 +980,6 @@
                     });
                 }
             } else {
-                // Пауза
                 music.pause();
                 playBtn.classList.remove('playing');
                 musicStatus.textContent = '⏸️ Пауза';
@@ -994,7 +987,6 @@
             }
         });
 
-        // Эффекты под музыку
         function startMusicEffects() {
             const climaxMoments = [20, 45, 70, 95, 115, 140];
             
@@ -1041,7 +1033,6 @@
             document.querySelectorAll('section').forEach(section => observer.observe(section));
         }
 
-        // Викторина
         let answered = false;
         function answer(el, correct) {
             if (answered) return;
@@ -1063,7 +1054,6 @@
             result.classList.add('show');
         }
 
-        // Соответствия
         let selectedDate = null, selectedEvent = null, matchedPairs = 0;
         function selectMatch(el, type) {
             if (el.classList.contains('matched')) return;
@@ -1098,7 +1088,6 @@
             }
         }
 
-        // Правда/ложь
         function checkTF(btn, isCorrect) {
             const buttons = btn.parentElement.querySelectorAll('.tf-btn');
             buttons.forEach(b => b.style.pointerEvents = 'none');
@@ -1111,7 +1100,6 @@
             }
         }
 
-        // Заполнение
         function checkWord(input) {
             const answer = input.value.toUpperCase().trim();
             if (answer === input.dataset.answer) {
@@ -1123,7 +1111,6 @@
             }
         }
 
-        // Поиск слов
         const grid = [
             ['П','А','В','Е','Л','Х','Г','Ю'],
             ['Л','Б','В','Г','Д','О','Е','К'],
