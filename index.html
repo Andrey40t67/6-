@@ -19,6 +19,58 @@
             overflow-x: hidden;
         }
 
+        /* Визуальные эффекты под музыку */
+        .music-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .flash {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.15) 0%, transparent 70%);
+            animation: flash 0.5s ease-out;
+        }
+
+        .pulse-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            animation: pulseRing 2s ease-out forwards;
+        }
+
+        @keyframes flash {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes pulseRing {
+            0% {
+                width: 100px;
+                height: 100px;
+                opacity: 1;
+            }
+            100% {
+                width: 800px;
+                height: 800px;
+                opacity: 0;
+            }
+        }
+
         /* Intro */
         .intro {
             height: 100vh;
@@ -39,63 +91,78 @@
         }
 
         .intro-line:nth-child(1) { animation-delay: 0.5s; }
-        .intro-line:nth-child(2) { animation-delay: 2.5s; }
-        .intro-line:nth-child(3) { animation-delay: 4.5s; }
+        .intro-line:nth-child(2) { animation-delay: 2s; }
+        .intro-line:nth-child(3) { animation-delay: 3.5s; }
 
         .music-text {
             margin-top: 40px;
             font-size: clamp(1rem, 2.5vw, 1.5rem);
             opacity: 0;
             animation: fadeIn 1.5s ease forwards;
-            animation-delay: 6.5s;
+            animation-delay: 5s;
         }
 
+        /* Большая кнопка Play */
         .play-btn {
-            width: 80px;
-            height: 80px;
-            border: 3px solid #fff;
+            width: 100px;
+            height: 100px;
+            border: 4px solid #fff;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 30px auto;
+            margin: 40px auto;
             cursor: pointer;
             opacity: 0;
             animation: fadeIn 1s ease forwards;
-            animation-delay: 8.5s;
-            position: relative;
+            animation-delay: 6.5s;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.05);
         }
 
-        .play-btn::before {
-            content: '';
+        .play-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255,255,255,0.1);
+            box-shadow: 0 0 30px rgba(255,255,255,0.3);
+        }
+
+        .play-btn.playing {
+            border-color: #4caf50;
+            animation: playingPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes playingPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(76, 175, 80, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(76, 175, 80, 0.8); }
+        }
+
+        .play-icon {
             width: 0;
             height: 0;
-            border-left: 25px solid #fff;
-            border-top: 15px solid transparent;
-            border-bottom: 15px solid transparent;
-            margin-left: 5px;
+            border-left: 30px solid #fff;
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            margin-left: 8px;
         }
 
-        .cursor {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            color: #fff;
-            font-size: 30px;
-            pointer-events: none;
-            opacity: 0;
-            animation: cursorMove 3s ease forwards;
-            animation-delay: 10s;
+        .play-btn.playing .play-icon {
+            border: none;
+            width: 25px;
+            height: 35px;
+            background: linear-gradient(to right, #fff 0%, #fff 40%, transparent 40%, transparent 60%, #fff 60%);
+            margin: 0;
         }
 
         .music-status {
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-size: clamp(1.3rem, 3vw, 2rem);
             font-weight: bold;
-            color: #ff4444;
             margin-top: 30px;
             opacity: 0;
-            animation: fadeIn 0.5s ease forwards;
-            animation-delay: 13s;
+            transition: opacity 0.5s;
+        }
+
+        .music-status.show {
+            opacity: 1;
         }
 
         /* Основной контент */
@@ -143,7 +210,6 @@
             text-align: justify;
         }
 
-        /* Разбор фамилии */
         .name-parts {
             display: flex;
             justify-content: center;
@@ -175,7 +241,6 @@
             color: #999;
         }
 
-        /* Временная линия */
         .timeline {
             margin: 40px 0;
         }
@@ -202,7 +267,6 @@
             margin-bottom: 10px;
         }
 
-        /* Факты */
         .facts {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -234,7 +298,6 @@
             margin-bottom: 10px;
         }
 
-        /* Страны */
         .countries {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -261,7 +324,6 @@
             margin-bottom: 10px;
         }
 
-        /* ЗАДАНИЕ 1: Викторина */
         .quiz {
             margin: 40px 0;
             padding: 30px;
@@ -289,13 +351,8 @@
             transform: translateX(10px);
         }
 
-        .option.correct {
-            background: #2d5016;
-        }
-
-        .option.wrong {
-            background: #501616;
-        }
+        .option.correct { background: #2d5016; }
+        .option.wrong { background: #501616; }
 
         .result {
             text-align: center;
@@ -305,11 +362,8 @@
             transition: opacity 0.5s;
         }
 
-        .result.show {
-            opacity: 1;
-        }
+        .result.show { opacity: 1; }
 
-        /* ЗАДАНИЕ 2: Соедини даты и события */
         .matching {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -326,25 +380,11 @@
             border: 2px solid transparent;
         }
 
-        .match-item:hover {
-            background: #2a2a2a;
-        }
+        .match-item:hover { background: #2a2a2a; }
+        .match-item.selected { border-color: #666; background: #2a2a2a; }
+        .match-item.matched { background: #2d5016; opacity: 0.5; cursor: not-allowed; }
 
-        .match-item.selected {
-            border-color: #666;
-            background: #2a2a2a;
-        }
-
-        .match-item.matched {
-            background: #2d5016;
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* ЗАДАНИЕ 3: Правда или ложь */
-        .true-false {
-            margin: 30px 0;
-        }
+        .true-false { margin: 30px 0; }
 
         .statement {
             padding: 20px;
@@ -375,22 +415,11 @@
             font-size: clamp(0.9rem, 2vw, 1.1rem);
         }
 
-        .tf-btn:hover {
-            background: #2a2a2a;
-        }
+        .tf-btn:hover { background: #2a2a2a; }
+        .tf-btn.correct { background: #2d5016; }
+        .tf-btn.wrong { background: #501616; }
 
-        .tf-btn.correct {
-            background: #2d5016;
-        }
-
-        .tf-btn.wrong {
-            background: #501616;
-        }
-
-        /* ЗАДАНИЕ 4: Кроссворд */
-        .crossword {
-            margin: 30px 0;
-        }
+        .crossword { margin: 30px 0; }
 
         .word-item {
             margin: 15px 0;
@@ -415,16 +444,9 @@
             text-transform: uppercase;
         }
 
-        .word-input.correct {
-            border-color: #4caf50;
-            background: #2d5016;
-        }
+        .word-input.correct { border-color: #4caf50; background: #2d5016; }
+        .word-input.wrong { border-color: #f44336; }
 
-        .word-input.wrong {
-            border-color: #f44336;
-        }
-
-        /* ЗАДАНИЕ 5: Найди слова */
         .word-search {
             display: grid;
             grid-template-columns: repeat(8, 1fr);
@@ -448,13 +470,8 @@
             font-size: clamp(0.8rem, 2vw, 1.1rem);
         }
 
-        .ws-cell:hover {
-            background: #2a2a2a;
-        }
-
-        .ws-cell.found {
-            background: #2d5016;
-        }
+        .ws-cell:hover { background: #2a2a2a; }
+        .ws-cell.found { background: #2d5016; }
 
         .words-list {
             text-align: center;
@@ -475,7 +492,6 @@
             text-decoration: line-through;
         }
 
-        /* Финал */
         .final {
             text-align: center;
             padding: 60px 20px;
@@ -505,29 +521,10 @@
             margin-bottom: 10px;
         }
 
-        /* Анимации */
         @keyframes fadeIn {
             to { opacity: 1; }
         }
 
-        @keyframes cursorMove {
-            0% {
-                opacity: 0;
-                transform: translate(-100px, -100px);
-            }
-            30% {
-                opacity: 1;
-            }
-            60% {
-                transform: translate(0, 0);
-            }
-            100% {
-                opacity: 1;
-                transform: translate(0, 0);
-            }
-        }
-
-        /* Адаптивность */
         @media (max-width: 768px) {
             .container { padding: 40px 15px; }
             .part { padding: 15px 20px; }
@@ -537,6 +534,9 @@
     </style>
 </head>
 <body>
+    <!-- Визуальные эффекты -->
+    <div class="music-effects" id="musicEffects"></div>
+
     <audio id="music" loop>
         <source src="interstellar_02. Cornfield Chase.mp3" type="audio/mpeg">
     </audio>
@@ -545,27 +545,25 @@
     <div class="intro" id="intro">
         <div class="intro-line">Привет, 6А! 👋</div>
         <div class="intro-line">Сегодня узнаем историю фамилии <strong>Пашкевич</strong>.</div>
-        <div class="intro-line">Приготовьтесь к путешествию в прошлое! 🎬</div>
+        <div class="intro-line">Приготовьтесь к путешествию! 🎬</div>
         
-        <div class="music-text">Включаю музыку из "Интерстеллар"...</div>
+        <div class="music-text">Кликни, чтобы включить музыку из "Интерстеллар"</div>
         
         <div class="play-btn" id="playBtn">
-            <div class="cursor">➤</div>
+            <div class="play-icon"></div>
         </div>
         
-        <div class="music-status" id="musicStatus">🤫 ТИШИНА! Погромче звук! 🤫</div>
+        <div class="music-status" id="musicStatus"></div>
     </div>
 
     <!-- ОСНОВНОЙ КОНТЕНТ -->
     <div class="container">
-        <!-- Секция 1: Введение -->
         <section>
             <h1>ПАШКЕВИЧ</h1>
             <p>Фамилия Пашкевич имеет богатую историю, насчитывающую более 400 лет! Она пришла из Великого княжества Литовского, где жили наши предки. В XVI веке первые носители фамилии принадлежали к польско-литовской шляхте - дворянству той эпохи.</p>
             <p>Эта фамилия пережила войны, революции, смену государств и границ. Она соединяет нас с великим прошлым и напоминает о славных предках!</p>
         </section>
 
-        <!-- Секция 2: Разбор -->
         <section>
             <h2>Что означает фамилия?</h2>
             <div class="name-parts">
@@ -583,45 +581,43 @@
             <p>Суффикс "-кевич" (или "-евич") имеет славянское происхождение. Он указывает на родственную связь и означает "сын" или "потомок". Такие же суффиксы встречаются в фамилиях Иванович, Петрович, Михайлович.</p>
         </section>
 
-        <!-- Секция 3: География -->
         <section>
             <h2>География фамилии</h2>
-            <p>Фамилия Пашкевич распространена в нескольких странах Восточной Европы. Наведи на страну, чтобы узнать больше!</p>
+            <p>Фамилия Пашкевич распространена в нескольких странах Восточной Европы.</p>
             <div class="countries">
-                <div class="country" title="Литва - родина фамилии">
+                <div class="country">
                     <div class="country-flag">🇱🇹</div>
                     <div>Литва</div>
                 </div>
-                <div class="country" title="Польша - польская шляхта">
+                <div class="country">
                     <div class="country-flag">🇵🇱</div>
                     <div>Польша</div>
                 </div>
-                <div class="country" title="Беларусь - деревни Пашкевичи">
+                <div class="country">
                     <div class="country-flag">🇧🇾</div>
                     <div>Беларусь</div>
                 </div>
-                <div class="country" title="Украина - широкое распространение">
+                <div class="country">
                     <div class="country-flag">🇺🇦</div>
                     <div>Украина</div>
                 </div>
-                <div class="country" title="Россия - после миграции">
+                <div class="country">
                     <div class="country-flag">🇷🇺</div>
                     <div>Россия</div>
                 </div>
             </div>
         </section>
 
-        <!-- Секция 4: История -->
         <section>
             <h2>Хроника событий</h2>
             <div class="timeline">
                 <div class="timeline-item">
                     <div class="year">⚔️ XVI век</div>
-                    <p>Первые документальные упоминания фамилии в исторических хрониках Великого княжества Литовского. Пашкевичи входили в состав шляхты - привилегированного дворянского сословия.</p>
+                    <p>Первые документальные упоминания фамилии в исторических хрониках Великого княжества Литовского. Пашкевичи входили в состав шляхты.</p>
                 </div>
                 <div class="timeline-item">
                     <div class="year">🏰 1622 год</div>
-                    <p>В исторических документах зафиксированы имена литовских помещиков Якова и Станислава Пашкевичей. Один из представителей рода занимал должность подстаросты ковенского.</p>
+                    <p>В исторических документах зафиксированы имена литовских помещиков Якова и Станислава Пашкевичей. Один занимал должность подстаросты ковенского.</p>
                 </div>
                 <div class="timeline-item">
                     <div class="year">🇷🇺 XVII век</div>
@@ -629,109 +625,105 @@
                 </div>
                 <div class="timeline-item">
                     <div class="year">🎖️ XVIII-XIX века</div>
-                    <p>Эпоха расцвета! Среди носителей - выдающиеся военачальники и государственные деятели. Самый знаменитый - генерал-фельдмаршал Паскевич, герой Отечественной войны 1812 года.</p>
+                    <p>Эпоха расцвета! Среди носителей - выдающиеся военачальники. Самый знаменитый - генерал-фельдмаршал Паскевич, герой Отечественной войны 1812 года.</p>
                 </div>
                 <div class="timeline-item">
                     <div class="year">🌍 XX-XXI века</div>
-                    <p>Фамилия распространилась по всему миру. Сегодня её носят тысячи людей в разных странах, каждый из которых - часть великой истории!</p>
+                    <p>Фамилия распространилась по всему миру. Сегодня её носят тысячи людей в разных странах!</p>
                 </div>
             </div>
         </section>
 
-        <!-- Секция 5: Факты -->
         <section>
             <h2>Удивительные факты</h2>
             <div class="facts">
                 <div class="fact">
                     <div class="fact-icon">🏰</div>
                     <div class="fact-title">Дворянский герб</div>
-                    <p>У рода Пашкевичей был собственный герб с изображением хоругви (знамени) на копье - символ воинской доблести.</p>
+                    <p>У рода был герб с изображением хоругви на копье - символ воинской доблести.</p>
                 </div>
                 <div class="fact">
                     <div class="fact-icon">🗺️</div>
                     <div class="fact-title">Географические корни</div>
-                    <p>Деревни с названием "Пашкевичи" существуют в Беларуси до сих пор - в Минской и Лидской областях.</p>
+                    <p>Деревни "Пашкевичи" существуют в Беларуси до сих пор.</p>
                 </div>
                 <div class="fact">
                     <div class="fact-icon">📝</div>
                     <div class="fact-title">Многообразие форм</div>
-                    <p>Фамилия пишется по-разному: Пашкевич, Паскевич, Paszkiewicz. Всё это варианты одной фамилии!</p>
+                    <p>Пашкевич, Паскевич, Paszkiewicz - варианты одной фамилии!</p>
                 </div>
                 <div class="fact">
                     <div class="fact-icon">🌟</div>
                     <div class="fact-title">Знаменитые люди</div>
-                    <p>Среди Пашкевичей - военачальники, дипломаты, писатели и деятели культуры разных эпох.</p>
+                    <p>Среди Пашкевичей - военачальники, дипломаты, писатели.</p>
                 </div>
                 <div class="fact">
                     <div class="fact-icon">👑</div>
                     <div class="fact-title">Дворянство</div>
-                    <p>Большинство носителей фамилии в XVI-XIX веках принадлежали к дворянскому сословию.</p>
+                    <p>Большинство носителей принадлежали к дворянскому сословию.</p>
                 </div>
                 <div class="fact">
                     <div class="fact-icon">📚</div>
                     <div class="fact-title">Документы</div>
-                    <p>Первые письменные упоминания фамилии найдены в архивах Великого княжества Литовского.</p>
+                    <p>Первые упоминания найдены в архивах Великого княжества Литовского.</p>
                 </div>
             </div>
         </section>
 
-        <!-- ЗАДАНИЕ 1: Викторина -->
         <section>
             <h2>Задание 1: Викторина</h2>
             <div class="quiz">
-                <div class="question">Что означает окончание "-кевич" в фамилии?</div>
-                <div class="option" onclick="answer(this, false)">Место проживания предков</div>
+                <div class="question">Что означает "-кевич"?</div>
+                <div class="option" onclick="answer(this, false)">Место проживания</div>
                 <div class="option" onclick="answer(this, true)">Сын или потомок</div>
                 <div class="option" onclick="answer(this, false)">Воинское звание</div>
-                <div class="option" onclick="answer(this, false)">Профессия предка</div>
+                <div class="option" onclick="answer(this, false)">Профессия</div>
                 <div class="result" id="result"></div>
             </div>
         </section>
 
-        <!-- ЗАДАНИЕ 2: Соедини даты и события -->
         <section>
             <h2>Задание 2: Соедини даты и события</h2>
-            <p>Кликни на дату, затем на соответствующее событие</p>
+            <p>Кликни на дату, затем на событие</p>
             <div class="matching">
                 <div class="match-item" data-id="1" onclick="selectMatch(this, 'date')">XVI век</div>
                 <div class="match-item" data-id="3" onclick="selectMatch(this, 'event')">Переезд в Россию</div>
                 <div class="match-item" data-id="2" onclick="selectMatch(this, 'date')">1622 год</div>
                 <div class="match-item" data-id="1" onclick="selectMatch(this, 'event')">Первые упоминания</div>
                 <div class="match-item" data-id="3" onclick="selectMatch(this, 'date')">XVII век</div>
-                <div class="match-item" data-id="4" onclick="selectMatch(this, 'event')">Герой войны 1812 года</div>
+                <div class="match-item" data-id="4" onclick="selectMatch(this, 'event')">Герой 1812 года</div>
                 <div class="match-item" data-id="4" onclick="selectMatch(this, 'date')">XVIII-XIX века</div>
-                <div class="match-item" data-id="2" onclick="selectMatch(this, 'event')">Подстароста ковенский</div>
+                <div class="match-item" data-id="2" onclick="selectMatch(this, 'event')">Подстароста</div>
             </div>
             <div class="result" id="matchResult"></div>
         </section>
 
-        <!-- ЗАДАНИЕ 3: Правда или ложь -->
         <section>
             <h2>Задание 3: Правда или ложь?</h2>
             <div class="true-false">
                 <div class="statement">
-                    <div class="statement-text">Фамилия Пашкевич происходит от имени Павел</div>
+                    <div class="statement-text">Фамилия происходит от имени Павел</div>
                     <div class="tf-buttons">
                         <button class="tf-btn" onclick="checkTF(this, true)">Правда</button>
                         <button class="tf-btn" onclick="checkTF(this, false)">Ложь</button>
                     </div>
                 </div>
                 <div class="statement">
-                    <div class="statement-text">Носители фамилии были крестьянами</div>
+                    <div class="statement-text">Носители были крестьянами</div>
                     <div class="tf-buttons">
                         <button class="tf-btn" onclick="checkTF(this, false)">Правда</button>
                         <button class="tf-btn" onclick="checkTF(this, true)">Ложь</button>
                     </div>
                 </div>
                 <div class="statement">
-                    <div class="statement-text">Деревни "Пашкевичи" существуют в Беларуси</div>
+                    <div class="statement-text">Деревни "Пашкевичи" есть в Беларуси</div>
                     <div class="tf-buttons">
                         <button class="tf-btn" onclick="checkTF(this, true)">Правда</button>
                         <button class="tf-btn" onclick="checkTF(this, false)">Ложь</button>
                     </div>
                 </div>
                 <div class="statement">
-                    <div class="statement-text">Фамилия появилась только в XX веке</div>
+                    <div class="statement-text">Фамилия появилась в XX веке</div>
                     <div class="tf-buttons">
                         <button class="tf-btn" onclick="checkTF(this, false)">Правда</button>
                         <button class="tf-btn" onclick="checkTF(this, true)">Ложь</button>
@@ -740,33 +732,31 @@
             </div>
         </section>
 
-        <!-- ЗАДАНИЕ 4: Заполни пропуски -->
         <section>
             <h2>Задание 4: Заполни пропуски</h2>
             <div class="crossword">
                 <div class="word-item">
-                    <div class="word-clue">1. Страна, откуда пришла фамилия (начинается на Л)</div>
-                    <input type="text" class="word-input" data-answer="ЛИТВА" onchange="checkWord(this)" placeholder="Введи ответ">
+                    <div class="word-clue">1. Страна происхождения (на Л)</div>
+                    <input type="text" class="word-input" data-answer="ЛИТВА" onchange="checkWord(this)">
                 </div>
                 <div class="word-item">
-                    <div class="word-clue">2. Дворянское сословие в Польше и Литве</div>
-                    <input type="text" class="word-input" data-answer="ШЛЯХТА" onchange="checkWord(this)" placeholder="Введи ответ">
+                    <div class="word-clue">2. Дворянское сословие</div>
+                    <input type="text" class="word-input" data-answer="ШЛЯХТА" onchange="checkWord(this)">
                 </div>
                 <div class="word-item">
                     <div class="word-clue">3. Имя, от которого образована фамилия</div>
-                    <input type="text" class="word-input" data-answer="ПАВЕЛ" onchange="checkWord(this)" placeholder="Введи ответ">
+                    <input type="text" class="word-input" data-answer="ПАВЕЛ" onchange="checkWord(this)">
                 </div>
                 <div class="word-item">
-                    <div class="word-clue">4. Символ на гербе (знамя)</div>
-                    <input type="text" class="word-input" data-answer="ХОРУГВЬ" onchange="checkWord(this)" placeholder="Введи ответ">
+                    <div class="word-clue">4. Символ на гербе</div>
+                    <input type="text" class="word-input" data-answer="ХОРУГВЬ" onchange="checkWord(this)">
                 </div>
             </div>
         </section>
 
-        <!-- ЗАДАНИЕ 5: Найди слова -->
         <section>
-            <h2>Задание 5: Найди спрятанные слова</h2>
-            <p style="text-align: center;">Кликай на буквы, чтобы найти слова (по горизонтали и вертикали)</p>
+            <h2>Задание 5: Найди слова</h2>
+            <p style="text-align: center;">Кликай буквы по порядку</p>
             <div class="word-search" id="wordSearch"></div>
             <div class="words-list">
                 <span class="word-to-find" id="word-ПАВЕЛ">ПАВЕЛ</span>
@@ -776,10 +766,9 @@
             </div>
         </section>
 
-        <!-- Финал -->
         <section class="final">
             <h1>🏆 История сохранена! 🏆</h1>
-            <p>Теперь все знают удивительную историю фамилии Пашкевич!</p>
+            <p>Теперь все знают историю фамилии Пашкевич!</p>
             <div class="stats">
                 <div class="stat">
                     <div class="stat-num">400+</div>
@@ -804,23 +793,88 @@
 
     <script>
         const music = document.getElementById('music');
+        const playBtn = document.getElementById('playBtn');
+        const musicStatus = document.getElementById('musicStatus');
         const intro = document.getElementById('intro');
+        const musicEffects = document.getElementById('musicEffects');
+        
+        let isPlaying = false;
 
-        // Автоматическое включение музыки после анимации курсора
-        setTimeout(() => {
-            music.volume = 0.6;
-            music.play().catch(e => console.log('Автовоспроизведение заблокировано'));
+        // Кнопка Play - клик включает музыку
+        playBtn.addEventListener('click', () => {
+            if (!isPlaying) {
+                music.volume = 0.65;
+                music.play();
+                isPlaying = true;
+                playBtn.classList.add('playing');
+                musicStatus.textContent = '🎵 Музыка играет! 🎵';
+                musicStatus.style.color = '#4caf50';
+                musicStatus.classList.add('show');
+                
+                setTimeout(() => {
+                    intro.style.opacity = '0';
+                    setTimeout(() => {
+                        intro.style.display = 'none';
+                        revealSections();
+                    }, 1000);
+                }, 2000);
+                
+                startMusicEffects();
+            }
+        });
+
+        // Визуальные эффекты синхронизированные с музыкой
+        function startMusicEffects() {
+            // Cornfield Chase кульминационные моменты (примерно)
+            const climaxMoments = [
+                20,  // Первое нарастание
+                45,  // Второй пик
+                70,  // Третий пик
+                95,  // Финальное усиление
+                110  // Кульминация
+            ];
+
+            music.addEventListener('timeupdate', () => {
+                const currentTime = Math.floor(music.currentTime);
+                
+                // Проверяем, если время близко к кульминации
+                climaxMoments.forEach(moment => {
+                    if (currentTime === moment) {
+                        createFlash();
+                        createPulseRing();
+                    }
+                });
+            });
+        }
+
+        function createFlash() {
+            const flash = document.createElement('div');
+            flash.className = 'flash';
+            musicEffects.appendChild(flash);
+            musicEffects.style.opacity = '1';
             
             setTimeout(() => {
-                intro.style.opacity = '0';
-                setTimeout(() => {
-                    intro.style.display = 'none';
-                    revealSections();
-                }, 1000);
-            }, 2000);
-        }, 13000);
+                flash.remove();
+                if (musicEffects.children.length === 0) {
+                    musicEffects.style.opacity = '0';
+                }
+            }, 500);
+        }
 
-        // Показ секций при скролле
+        function createPulseRing() {
+            const ring = document.createElement('div');
+            ring.className = 'pulse-ring';
+            musicEffects.appendChild(ring);
+            musicEffects.style.opacity = '1';
+            
+            setTimeout(() => {
+                ring.remove();
+                if (musicEffects.children.length === 0) {
+                    musicEffects.style.opacity = '0';
+                }
+            }, 2000);
+        }
+
         function revealSections() {
             const sections = document.querySelectorAll('section');
             const observer = new IntersectionObserver((entries) => {
@@ -855,7 +909,7 @@
             result.classList.add('show');
         }
 
-        // Соедини даты и события
+        // Соедини даты
         let selectedDate = null;
         let selectedEvent = null;
         let matchedPairs = 0;
@@ -893,7 +947,7 @@
             }
         }
 
-        // Правда или ложь
+        // Правда/ложь
         function checkTF(btn, isCorrect) {
             const buttons = btn.parentElement.querySelectorAll('.tf-btn');
             buttons.forEach(b => b.style.pointerEvents = 'none');
@@ -924,7 +978,7 @@
             }
         }
 
-        // Найди слова - генерация поля
+        // Найди слова
         const grid = [
             ['П','А','В','Е','Л','Х','Г','Ю'],
             ['Л','Б','В','Г','Д','О','Е','К'],
@@ -964,7 +1018,6 @@
             selectedCells.push({cell, row, col});
             cell.style.background = '#444';
             
-            // Проверка найденных слов
             for (let [word, positions] of Object.entries(words)) {
                 if (selectedCells.length === positions.length) {
                     let matches = true;
